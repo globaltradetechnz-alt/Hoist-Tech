@@ -53,7 +53,7 @@ export default function Services() {
         <div className="text-center max-w-3xl mx-auto mb-16">
           <span className="text-orange-500 font-semibold text-sm uppercase tracking-wider">What We Do</span>
           <h2 className="text-3xl sm:text-4xl font-bold text-white mt-3 mb-6">
-            Complete Car Hoist Services in Auckland
+            Complete Car Hoist Service in Auckland
           </h2>
           <p className="text-gray-400 text-lg">
             From new installations to emergency repairs, Hoist Tech provides comprehensive 

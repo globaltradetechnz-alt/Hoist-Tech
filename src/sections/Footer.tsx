@@ -36,7 +36,7 @@ export default function Footer() {
 
           {/* Services */}
           <div>
-            <h3 className="text-white font-bold mb-6">Our Services</h3>
+            <h3 className="text-white font-bold mb-6">Our Service</h3>
             <ul className="space-y-3">
               {[
                 'Hoist Installation',

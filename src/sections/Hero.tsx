@@ -45,7 +45,7 @@ export default function Hero() {
                 href="#services"
                 className="inline-flex items-center gap-2 border-2 border-white/20 hover:border-orange-500 text-white px-8 py-4 rounded font-bold text-base transition-all"
               >
-                Our Services
+                Our Service
               </a>
             </div>
 
