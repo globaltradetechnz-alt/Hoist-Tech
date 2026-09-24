@@ -10,10 +10,31 @@ export default function Contact() {
     message: '',
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real implementation, this would send to a backend
-    alert('Thank you for your enquiry! We will contact you shortly.');
+    setStatus('sending');
+    try {
+      const body = new URLSearchParams({
+        'form-name': 'contact',
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        service: formData.service,
+        message: formData.message,
+      }).toString();
+      const res = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body,
+      });
+      if (!res.ok) throw new Error('send failed');
+      setStatus('sent');
+      setFormData({ name: '', email: '', phone: '', service: '', message: '' });
+    } catch {
+      setStatus('error');
+    }
   };
 
   return (
@@ -88,7 +109,8 @@ export default function Contact() {
 
           {/* Contact Form */}
           <div className="lg:col-span-3">
-            <form onSubmit={handleSubmit} className="bg-black/50 border border-white/5 rounded-xl p-8 space-y-6">
+            <form name="contact" method="POST" data-netlify="true" onSubmit={handleSubmit} className="bg-black/50 border border-white/5 rounded-xl p-8 space-y-6">
+              <input type="hidden" name="form-name" value="contact" />
               <div className="grid sm:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-white text-sm font-medium mb-2">Your Name</label>
@@ -157,11 +179,22 @@ export default function Contact() {
 
               <button
                 type="submit"
-                className="w-full flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-lg font-bold text-base transition-all hover:translate-y-[-2px]"
+                disabled={status === 'sending'}
+                className="w-full flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-lg font-bold text-base transition-all hover:translate-y-[-2px] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
               >
                 <Send className="w-5 h-5" />
-                Send Enquiry
+                {status === 'sending' ? 'Sending...' : 'Send Enquiry'}
               </button>
+              {status === 'sent' && (
+                <p className="text-green-400 text-sm text-center">
+                  Thank you for your enquiry! We will contact you shortly.
+                </p>
+              )}
+              {status === 'error' && (
+                <p className="text-red-400 text-sm text-center">
+                  Something went wrong. Please call us on 021 322-020 or email hoist_tech@yahoo.com
+                </p>
+              )}
             </form>
           </div>
         </div>
